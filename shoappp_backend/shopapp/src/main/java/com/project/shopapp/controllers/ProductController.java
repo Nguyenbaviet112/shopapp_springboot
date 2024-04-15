@@ -67,7 +67,13 @@ public class ProductController {
             try {
 
                 Product existingProduct = iProductService.getProductById(productId);
+
                 files = files == null ? new ArrayList<MultipartFile>() : files;
+
+                if (files.size() > ProductImage.MAXIMUM_IMAGES_PER_PRODUCT)
+                {
+                    ResponseEntity.badRequest().body("You can only upload maximum 5 images");
+                }
 
                 List<ProductImage> productImages = new ArrayList<>();
                 for (MultipartFile file : files) {
@@ -106,6 +112,12 @@ public class ProductController {
 
         }
         private String storeFile(MultipartFile file) throws IOException {
+
+            if (!isImageFile(file) || file.getOriginalFilename() == null)
+            {
+                throw new IOException("Invalid image format");
+            }
+
             String filename = StringUtils.cleanPath(file.getOriginalFilename());
             // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
             String uniqueFilename = UUID.randomUUID().toString() + "_" + filename;
@@ -120,6 +132,12 @@ public class ProductController {
             // Sao chép file vào thư mục đích
             Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
             return uniqueFilename;
+        }
+
+        private boolean isImageFile(MultipartFile file)
+        {
+            String contentType = file.getContentType();
+            return contentType != null && contentType.startsWith("image/");
         }
 
 
