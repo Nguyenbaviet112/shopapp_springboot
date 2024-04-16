@@ -176,8 +176,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body("delete product with id = " + productId);
     }
 
-    @PostMapping("/generateFakeProducts")
-    public ResponseEntity<?> generateFakeProducts() {
+    //@PostMapping("/generateFakeProducts")
+    private ResponseEntity<?> generateFakeProducts() {
 
         Faker faker = new Faker();
 
@@ -193,6 +193,7 @@ public class ProductController {
                     .name(productName)
                     .price((float)faker.number().numberBetween(1000, 50000000))
                     .description(faker.lorem().sentence())
+                    .thumbnail("")
                     .categoryId((long)faker.number().numberBetween(1,5))
 
                     .build();
