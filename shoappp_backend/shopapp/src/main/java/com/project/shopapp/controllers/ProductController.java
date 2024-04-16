@@ -165,15 +165,45 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getProductById(@PathVariable("id") long productId)
+    public ResponseEntity<?> getProductById(@PathVariable("id") long productId)
     {
-        return ResponseEntity.ok("Product with id: " + productId);
+        try {
+
+            Product existingProduct = iProductService.getProductById(productId);
+            return ResponseEntity.ok().body(ProductResponse.fromProduct(existingProduct));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable("id") long productId)
     {
-        return ResponseEntity.status(HttpStatus.OK).body("delete product with id = " + productId);
+        try {
+
+            iProductService.deleteProduct(productId);
+            return ResponseEntity.status(HttpStatus.OK).body("delete product with id = " + productId + " successfully");
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable("id") long productId, @RequestBody ProductDTO productDTO)
+    {
+        try {
+
+            Product newProduct = iProductService.updateProduct(productId, productDTO);
+            return ResponseEntity.ok().body(newProduct);
+
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     //@PostMapping("/generateFakeProducts")
