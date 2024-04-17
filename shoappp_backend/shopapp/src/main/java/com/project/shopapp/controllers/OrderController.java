@@ -40,11 +40,24 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/{user_id}")
-    public ResponseEntity<?> getOrder(@Valid @PathVariable("user_id") long userId)
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<?> getOrdersByUserId(@Valid @PathVariable("user_id") long userId)
     {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(String.format("Get list order by user_id = %d", userId));
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrderById(@Valid @PathVariable("id") long orderId)
+    {
+        try {
+            Order order = orderService.getOrderById(orderId);
+            return ResponseEntity.status(HttpStatus.OK).body(order);
         }
         catch (Exception e)
         {
