@@ -44,7 +44,8 @@ public class OrderController {
     public ResponseEntity<?> getOrdersByUserId(@Valid @PathVariable("user_id") long userId)
     {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(String.format("Get list order by user_id = %d", userId));
+            List<Order> orders = orderService.getAllOrdersByUserId(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(orders);
         }
         catch (Exception e)
         {
@@ -68,13 +69,23 @@ public class OrderController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrder(@Valid @PathVariable("id") long id, @RequestBody OrderDTO orderDTO)
     {
-        return ResponseEntity.ok().body(String.format("update order by id = %d, \n new order: ", id) + orderDTO );
+        try {
+            Order order = orderService.updateOrder(id, orderDTO);
+            return ResponseEntity.ok().body(order);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrder(@Valid @PathVariable("id") long id)
     {
         // Xoá mềm => Cập nhật trường active bằng false
+        orderService.deleteOrder(id);
         return ResponseEntity.ok("Order deleted successfully");
+
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,22 +55,43 @@ public class OrderService implements IOrderService{
 
     @Override
     public Order getOrderById(Long orderId) {
-        return null;
+        return orderRepository.findById(orderId).orElse(null);
     }
 
     @Override
-    public Order updateOrder(Long orderId, OrderDTO orderDTO) {
-        return null;
+    public Order updateOrder(Long orderId, OrderDTO orderDTO) throws DataNotFoundException {
+
+        Order order = orderRepository.findById(orderId).orElseThrow(() ->
+                new DataNotFoundException("Cannot find order with id: " + orderId));
+
+        User existingUser = userRepository.findById(orderDTO.getUserId()).orElseThrow(() ->
+                new DataNotFoundException("Cannot find user with id: " + orderDTO.getUserId()));
+
+        modelMapper.typeMap(OrderDTO.class, Order.class)
+                .addMappings(mapper -> mapper.skip(Order::setId));
+
+        modelMapper.map(orderDTO, order);
+        order.setUser(existingUser);
+        return orderRepository.save(order);
+
     }
 
     @Override
     public void deleteOrder(Long orderId) {
 
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null) {
+            order.setActive(false);
+            orderRepository.save(order);
+        }
+
     }
 
     @Override
     public List<Order> getAllOrdersByUserId(Long userId) {
-        return List.of();
+
+        return orderRepository.findByUserId(userId);
+
     }
 
 }

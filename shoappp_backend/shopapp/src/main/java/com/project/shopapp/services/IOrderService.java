@@ -12,7 +12,7 @@ public interface IOrderService {
 
     Order getOrderById(Long orderId);
 
-    Order updateOrder(Long orderId, OrderDTO orderDTO);
+    Order updateOrder(Long orderId, OrderDTO orderDTO) throws DataNotFoundException;
 
     void deleteOrder(Long orderId);
 
