@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -38,7 +39,7 @@ public class OrderDTO {
     private String shippingMethod;
 
     @JsonProperty("shipping_date")
-    private Date shippingDate;
+    private LocalDate shippingDate;
 
     @JsonProperty("shopping_address")
     private String shippingAddress;

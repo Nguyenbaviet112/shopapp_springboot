@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,15 @@ public class OrderService implements IOrderService{
         order.setOrderDate(new Date());
         order.setStatus(OrderStatus.PENDING);
 
+        LocalDate shippingDate = orderDTO.getShippingDate() == null ? LocalDate.now() : orderDTO.getShippingDate();
+
+        if (shippingDate.isBefore(LocalDate.now()))
+        {
+            throw new DataNotFoundException("Shipping Date is not before current date");
+        }
+
         order.setActive(true);
+        order.setShippingDate(shippingDate);
         orderRepository.save(order);
 
         return null;
