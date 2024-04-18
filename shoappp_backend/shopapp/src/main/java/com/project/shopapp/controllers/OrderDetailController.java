@@ -1,17 +1,23 @@
 package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.OrderDetailDTO;
+import com.project.shopapp.services.IOrderDetailService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${api.prefix}/order_details")
+@RequiredArgsConstructor
 public class OrderDetailController {
+
+    private final IOrderDetailService orderDetailService;
 
     @PostMapping("")
     public ResponseEntity<?> createOrderDetail( @RequestBody OrderDetailDTO orderDetailDTO )
     {
+
         return ResponseEntity.ok("Created order detail successfully");
     }
 
