@@ -46,21 +46,25 @@ public class OrderDetailService implements IOrderDetailService{
 
     @Override
     public OrderDetail updateOrderDetail(Long orderDetailId, OrderDetailDTO newOrderDetailDTO) {
+
         return null;
     }
 
     @Override
-    public OrderDetail getOrderDetailById(Long orderDetailId) {
-        return null;
+    public OrderDetail getOrderDetailById(Long orderDetailId) throws DataNotFoundException {
+
+        return orderDetailRepository.findById(orderDetailId)
+                .orElseThrow(() -> new DataNotFoundException
+                        ("Cannot not find OrderDetail with id = " + orderDetailId));
     }
 
     @Override
-    public List<OrderDetail> getAllOrderDetails() {
-        return List.of();
+    public List<OrderDetail> getAllOrderDetailsByOrderId(Long OrderId) {
+        return orderDetailRepository.findByOrderId(OrderId);
     }
 
     @Override
     public void deleteOrderDetail(Long orderDetailId) {
-
+        orderDetailRepository.deleteById(orderDetailId);
     }
 }

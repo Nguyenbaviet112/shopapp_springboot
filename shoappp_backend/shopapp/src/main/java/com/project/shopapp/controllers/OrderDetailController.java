@@ -1,11 +1,15 @@
 package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.OrderDetailDTO;
+import com.project.shopapp.exceptions.DataNotFoundException;
+import com.project.shopapp.models.OrderDetail;
 import com.project.shopapp.services.IOrderDetailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/order_details")
@@ -17,20 +21,32 @@ public class OrderDetailController {
     @PostMapping("")
     public ResponseEntity<?> createOrderDetail( @RequestBody OrderDetailDTO orderDetailDTO )
     {
+        try {
+            OrderDetail newOrderDetail = orderDetailService.createOrderDetail(orderDetailDTO);
+            return ResponseEntity.ok().body(newOrderDetail);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        return ResponseEntity.ok("Created order detail successfully");
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderDetailById(@Valid @PathVariable("id") Long id)
     {
-        return ResponseEntity.ok(String.format("this is order Detail with id = %d", id));
+        try {
+            OrderDetail orderDetail = orderDetailService.getOrderDetailById(id);
+            return ResponseEntity.ok(orderDetail);
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/order/{order_id}")
     public ResponseEntity<?> getOrderDetailByOrderId(@Valid @PathVariable("order_id") Long orderId)
     {
-        return ResponseEntity.ok("Get list order detail with order_id = " + orderId);
+        List<OrderDetail> orders = orderDetailService.getAllOrderDetailsByOrderId(orderId);
+        return ResponseEntity.ok(orders);
     }
 
     @GetMapping("")
