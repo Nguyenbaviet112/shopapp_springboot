@@ -46,7 +46,6 @@ public class OrderDetailResponse {
                 .color(orderDetail.getColor())
                 .build();
 
-
     }
 
 }
