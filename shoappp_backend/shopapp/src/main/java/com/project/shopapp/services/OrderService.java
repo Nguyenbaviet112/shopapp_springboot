@@ -48,9 +48,8 @@ public class OrderService implements IOrderService{
 
         order.setActive(true);
         order.setShippingDate(shippingDate);
-        orderRepository.save(order);
+        return orderRepository.save(order);
 
-        return null;
     }
 
     @Override

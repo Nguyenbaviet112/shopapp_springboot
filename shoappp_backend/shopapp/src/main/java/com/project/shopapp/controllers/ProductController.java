@@ -211,7 +211,7 @@ public class ProductController {
 
         Faker faker = new Faker();
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 300; i++) {
 
             String productName = faker.commerce().productName();
             if (productService.existsByName(productName))
@@ -221,7 +221,7 @@ public class ProductController {
 
             ProductDTO productDTO = ProductDTO.builder()
                     .name(productName)
-                    .price((float)faker.number().numberBetween(1000, 50000000))
+                    .price((float)faker.number().numberBetween(1000, 50000))
                     .description(faker.lorem().sentence())
                     .thumbnail("")
                     .categoryId((long)faker.number().numberBetween(1,5))

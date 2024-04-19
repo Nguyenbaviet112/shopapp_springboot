@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private IOrderService orderService;
+    private final IOrderService orderService;
     @PostMapping("")
     public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDTO orderDTO, BindingResult result)
     {
@@ -33,7 +33,7 @@ public class OrderController {
             }
 
             Order order = orderService.createOrder(orderDTO);
-            return ResponseEntity.ok(order);
+            return ResponseEntity.ok().body(order);
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
-public class Order extends BaseEntity{
+public class Order{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,12 +64,6 @@ public class Order extends BaseEntity{
 
     @Column(name = "payment_method")
     private String paymentMethod;
-
-    @Column(name = "payment_status")
-    private String paymentStatus;
-
-    @Column(name = "payment_date")
-    private Date paymentDate;
 
     @Column(name = "active")
     private Boolean active;
