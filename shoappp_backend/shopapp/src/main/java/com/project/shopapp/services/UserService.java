@@ -11,6 +11,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
@@ -59,8 +61,16 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public String login(String phoneNumber, String password) {
+    public String login(String phoneNumber, String password) throws DataNotFoundException {
 
-        return null;
+        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
+        if (user.isEmpty())
+        {
+            throw new DataNotFoundException("Invalid phone number or password");
+        }
+
+
+
+        return "";
     }
 }
