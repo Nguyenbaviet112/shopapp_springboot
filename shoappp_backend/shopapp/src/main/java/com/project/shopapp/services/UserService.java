@@ -8,6 +8,7 @@ import com.project.shopapp.repositories.RoleRepository;
 import com.project.shopapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,8 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public User createUser(UserDTO userDTO) {
 
@@ -48,8 +51,8 @@ public class UserService implements IUserService {
         if (userDTO.getFacebookAccountId() == 0 || userDTO.getGoogleAccountId() == 0)
         {
             String password = userDTO.getPassword();
-            //String encodePassword = passwordEncoder.encode(password);
-            //newUser.setPassword(encodePassword);
+            String encoderPassword = passwordEncoder.encode(password);
+            newUser.setPassword(encoderPassword);
         }
 
         return userRepository.save(newUser);
@@ -57,6 +60,7 @@ public class UserService implements IUserService {
 
     @Override
     public String login(String phoneNumber, String password) {
+
         return null;
     }
 }
