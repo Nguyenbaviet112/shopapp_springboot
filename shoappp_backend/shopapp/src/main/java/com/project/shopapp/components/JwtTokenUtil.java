@@ -1,6 +1,5 @@
 package com.project.shopapp.components;
 
-import com.project.shopapp.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,7 +15,7 @@ import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
-public class jwtTokenUtil {
+public class JwtTokenUtil {
 
     @Value("${jwt.expiration}")
     private int expiration; // save to an environment variable
