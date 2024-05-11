@@ -1,6 +1,7 @@
 package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.UserDTO;
+import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.models.User;
 import com.project.shopapp.services.IUserService;
 import jakarta.validation.Valid;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("${api.prefix}`/users")
+@RequestMapping("${api.prefix}/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -55,7 +56,15 @@ public class UserController {
     {
         // Kiêm tra thông tin đăng nhập và sinh token
         // Trả về token trong Respon
-        String token = iUserService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
-        return ResponseEntity.ok(token);
+
+        try {
+            String token = iUserService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
+            return ResponseEntity.ok(token);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+
     }
 }
