@@ -28,7 +28,6 @@ public class JwtTokenUtil {
     public String generateToken(com.project.shopapp.models.User user) throws Exception {
         // properties => claims
 
-        this.generateSecretKey();
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("phoneNumber", user.getPhoneNumber());

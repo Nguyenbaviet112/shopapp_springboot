@@ -27,4 +27,4 @@ server:
   port: 8088
 jwt:
   expiration: 2592000 # 30 days = 30 * 24 * 60 * 60
-  secretKey: I have a dream
+  secretKey: Oem8VWhYEhhtT8UWLps1U34rAxnLh/Z6uqmL+wIaY30=
