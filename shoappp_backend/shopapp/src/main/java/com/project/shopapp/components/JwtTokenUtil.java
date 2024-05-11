@@ -5,12 +5,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.function.Function;
 
@@ -25,6 +27,9 @@ public class JwtTokenUtil {
 
     public String generateToken(com.project.shopapp.models.User user) throws Exception {
         // properties => claims
+
+        this.generateSecretKey();
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("phoneNumber", user.getPhoneNumber());
         try {
@@ -43,6 +48,15 @@ public class JwtTokenUtil {
 
 
         }
+    }
+
+    private String generateSecretKey()
+    {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] keyBytes = new byte[32]; // 256-bit key
+        secureRandom.nextBytes(keyBytes);
+       return Encoders.BASE64.encode(keyBytes);
+
     }
 
     private Key getSignInKey() {
