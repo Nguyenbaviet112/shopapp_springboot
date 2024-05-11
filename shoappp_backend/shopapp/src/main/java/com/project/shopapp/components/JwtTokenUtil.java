@@ -1,5 +1,6 @@
 package com.project.shopapp.components;
 
+import com.project.shopapp.exceptions.InvalidParamException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,7 +23,7 @@ public class JwtTokenUtil {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
-    public String generateToken(com.project.shopapp.models.User user) {
+    public String generateToken(com.project.shopapp.models.User user) throws Exception {
         // properties => claims
         Map<String, Object> claims = new HashMap<>();
         claims.put("phoneNumber", user.getPhoneNumber());
@@ -38,8 +39,7 @@ public class JwtTokenUtil {
         }
         catch (Exception e) {
             // you can "inject" Logger, instead System.out.println
-            System.out.println("Cannot create JWT token, error: " + e.getMessage());
-            return null;
+            throw new InvalidParamException("Cannot create JWT token, error: " + e.getMessage());
 
 
         }

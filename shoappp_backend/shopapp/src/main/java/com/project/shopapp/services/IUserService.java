@@ -8,6 +8,6 @@ public interface IUserService {
 
     User createUser(UserDTO userDTO);
 
-    String login(String phoneNumber, String password) throws DataNotFoundException;
+    String login(String phoneNumber, String password) throws Exception;
 
 }
