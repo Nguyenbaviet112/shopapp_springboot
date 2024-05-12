@@ -2,8 +2,10 @@ package com.project.shopapp.configurations;
 
 import com.project.shopapp.filters.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -15,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    @Value("${api.prefix")
+    private String apiPrefix;
     private final JwtTokenFilter jwtTokenFilter;
 
     @Bean
@@ -24,8 +28,16 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
-                    requests.requestMatchers("**")
-                            .permitAll();
+                    requests
+                            .requestMatchers(
+                                    String.format("%s/users/register", apiPrefix),
+                                    String.format("%s/users/login", apiPrefix)
+                            )
+                            .permitAll()
+                            .requestMatchers(HttpMethod.PUT,
+                                    String.format("%s/orders", apiPrefix)).hasRole("ADMIN")
+                            .anyRequest().authenticated();
+
                 });
         return http.build();
 
