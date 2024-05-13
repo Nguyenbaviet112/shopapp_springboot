@@ -34,8 +34,14 @@ public class WebSecurityConfig {
                                     String.format("%s/users/login", apiPrefix)
                             )
                             .permitAll()
+                            .requestMatchers(HttpMethod.POST,
+                                    String.format("%s/orders/**", apiPrefix)).hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.GET,
+                                    String.format("%s/orders/**", apiPrefix)).hasAnyRole("ADMIN", "USER")
                             .requestMatchers(HttpMethod.PUT,
-                                    String.format("%s/orders", apiPrefix)).hasRole("ADMIN")
+                                    String.format("%s/orders/**", apiPrefix)).hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE,
+                                    String.format("%s/orders/**", apiPrefix)).hasRole("ADMIN")
                             .anyRequest().authenticated();
 
                 });
