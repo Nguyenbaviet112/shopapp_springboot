@@ -3,6 +3,7 @@ package com.project.shopapp.services;
 import com.project.shopapp.components.JwtTokenUtil;
 import com.project.shopapp.dtos.UserDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
+import com.project.shopapp.exceptions.PermissionDenyException;
 import com.project.shopapp.models.Role;
 import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.RoleRepository;
@@ -28,13 +29,21 @@ public class UserService implements IUserService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public User createUser(UserDTO userDTO) {
+    public User createUser(UserDTO userDTO) throws Exception{
 
         String phoneNumber = userDTO.getPhoneNumber();
 
         if (userRepository.existsByPhoneNumber(phoneNumber))
         {
             throw new DataIntegrityViolationException("Phone number already exists");
+        }
+
+        Role role = roleRepository.findById(userDTO.getRoldId())
+                .orElseThrow(() -> new DataNotFoundException("Role not found"));
+
+        if (role.getName().toUpperCase().equals(Role.ADMIN))
+        {
+            throw new PermissionDenyException("you cannot register an admin account");
         }
 
         // convert userDTO => user
@@ -49,10 +58,9 @@ public class UserService implements IUserService {
                 .build();
 
         try {
-            Role role = roleRepository.findById(userDTO.getRoldId())
-                    .orElseThrow(() -> new DataNotFoundException("Role not found"));
+
             newUser.setRole(role);
-        } catch (DataNotFoundException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
