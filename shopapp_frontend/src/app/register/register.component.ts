@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { RegisterDTO } from '../dtos/register.dto';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,7 @@ export class RegisterComponent {
   dateOfBirth: Date;
 
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private router: Router, private userService: UserService) {
     this.phoneNumber = ''; 
     this.password = '';
     this.retypePassword = '';
@@ -40,8 +41,9 @@ export class RegisterComponent {
   register() {
 
     debugger
-    const apiUrl = "localhost:8088/api/v1/users/register";
-    const registerData = {
+   
+    
+    const registerDTO:RegisterDTO = {
       "fullname" : this.fullName,
       "phone_number" : this.phoneNumber,
       "address" : this.address,
@@ -53,20 +55,14 @@ export class RegisterComponent {
       "role_id" : 1
     }
 
-    const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    this.http.post(apiUrl, registerData, {headers})
-      .subscribe({
+    this.userService.register(registerDTO).subscribe(
+      {
         next: (response: any) => {
+
           debugger
-          // xu ly ket qua tra ve khi dang ky thanh cong
-          if (response && (response.status === 200 || response.status === 201))
-          {
-            // dang ky thanh cong chuyen sang man hinh login
-            this.router.navigate(['/login']);
-          }
-          else {
-            // xu ly truong hop dang ky khong thanh cong neu can
-          }
+          // dang ky thanh cong chuyen sang man hinh login
+          this.router.navigate(['/login']);
+          
         },
         complete: () => {
           debugger
@@ -76,8 +72,9 @@ export class RegisterComponent {
           alert(`Can not register, error: ${err.error}`);
           
         },
-      });
-    
+      }
+    );
+
   }
 
   // how to check password match.
