@@ -12,7 +12,7 @@ export class RegisterComponent {
 
   @ViewChild('registerForm') registerForm!: NgForm;
   // Khai bao cac bien tuong ung voi cac truong du lieu trong form
-  phone: string;
+  phoneNumber: string;
   password: string;
   retypePassword: string;
   fullName: string;
@@ -22,7 +22,7 @@ export class RegisterComponent {
 
 
   constructor(private http: HttpClient, private router: Router) {
-    this.phone = '';
+    this.phoneNumber = ''; 
     this.password = '';
     this.retypePassword = '';
     this.fullName = '';
@@ -33,17 +33,55 @@ export class RegisterComponent {
 
   }
 
-  onPhoneChange() {
+  onPhoneNumberChange() {
 
   }
 
   register() {
+
+    debugger
     const apiUrl = "localhost:8088/api/v1/users/register";
+    const registerData = {
+      "fullname" : this.fullName,
+      "phone_number" : this.phoneNumber,
+      "address" : this.address,
+      "password" : this.password,
+      "retype_password" : this.retypePassword,
+      "date_of_birth" : this.dateOfBirth,
+      "facebook_account_id" : 0,
+      "google_account_id" : 0,
+      "role_id" : 1
+    }
+
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    this.http.post(apiUrl, registerData, {headers})
+      .subscribe({
+        next: (response: any) => {
+          debugger
+          // xu ly ket qua tra ve khi dang ky thanh cong
+          if (response && (response.status === 200 || response.status === 201))
+          {
+            // dang ky thanh cong chuyen sang man hinh login
+            this.router.navigate(['/login']);
+          }
+          else {
+            // xu ly truong hop dang ky khong thanh cong neu can
+          }
+        },
+        complete: () => {
+          debugger
+        },
+        error: (err:any) => {
+          // xu ly loi neu co
+          alert(`Can not register, error: ${err.error}`);
+          
+        },
+      });
     
   }
 
   // how to check password match.
-  checkPasswordMatch()
+  checkPasswordsMatch()
   {
     if (this.password != this.retypePassword)
     {
