@@ -3,14 +3,15 @@ import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { RegisterDTO } from '../dtos/user/register.dto';
 import { LoginDTO } from '../dtos/user/login.dto';
+import { enviroment } from '../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private apiRegister = "localhost:8088/api/v1/users/register";
-  private apiLogin = "localhost:8088/api/v1/users/login";
+  private apiRegister = `${enviroment.apiBaseUrl}/users/register`;
+  private apiLogin = `${enviroment.apiBaseUrl}/users/login`;
   private apiConfig = {
     headers: this.createHeaders(),
   }
