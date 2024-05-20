@@ -15,7 +15,7 @@ public class LanguageConfig {
         messageSource.setBasename("i18n.messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
-        
+
     }
 
 }
