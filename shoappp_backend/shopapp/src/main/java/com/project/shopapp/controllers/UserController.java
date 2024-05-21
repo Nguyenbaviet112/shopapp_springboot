@@ -3,7 +3,9 @@ package com.project.shopapp.controllers;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.Utils.MessageKeys;
 import com.project.shopapp.dtos.UserDTO;
+import com.project.shopapp.models.User;
 import com.project.shopapp.responses.LoginResponse;
+import com.project.shopapp.responses.RegisterResponse;
 import com.project.shopapp.services.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class UserController {
     private final LocalizationUtils localizationUtils;
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
+    public ResponseEntity<RegisterResponse> createUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
 
         try
         {
@@ -37,20 +39,38 @@ public class UserController {
                         .stream()
                         .map(FieldError::getDefaultMessage)
                         .toList();
-                return ResponseEntity.badRequest().body(errorMessages);
+                return ResponseEntity.badRequest().body(
+                        RegisterResponse.builder()
+                                .message("error")
+                                .user(null)
+                                .build()
+                );
             }
 
             if (!(userDTO.getPassword().equals(userDTO.getRetypePassword())))
             {
-                return ResponseEntity.badRequest().body("Password does not match");
+                return ResponseEntity.badRequest().body(
+                        RegisterResponse.builder()
+                                .message(localizationUtils.getLocalizedMessage(
+                                        MessageKeys.PASSWORD_NOT_MATCH))
+                                .user(null)
+                                .build());
             }
 
-            iUserService.createUser(userDTO);
+            User user = iUserService.createUser(userDTO);
 
-            return ResponseEntity.status(HttpStatus.OK).body("Register Successfully");
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    RegisterResponse.builder()
+                            .message(localizationUtils.getLocalizedMessage(MessageKeys.REGISTER_SUCCESSFULLY))
+                            .user(user)
+                            .build()
+            );
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(RegisterResponse.builder()
+                    .message(localizationUtils.getLocalizedMessage(MessageKeys.REGISTER_FAILED, e.getMessage()))
+                    .user(null)
+                    .build());
         }
     }
 
