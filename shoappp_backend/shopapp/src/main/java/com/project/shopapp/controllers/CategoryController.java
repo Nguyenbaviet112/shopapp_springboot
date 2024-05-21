@@ -1,5 +1,6 @@
 package com.project.shopapp.controllers;
 
+import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.CategoryDTO;
 import com.project.shopapp.models.Category;
 import com.project.shopapp.responses.UpdateCategoryResponse;
@@ -25,6 +26,7 @@ public class CategoryController {
     private final ICategoryService iCategoryService;
     private final MessageSource messageSource;
     private final LocaleResolver localResolver;
+    private final LocalizationUtils localizationUtils;
 
     @PostMapping("")
     public ResponseEntity<String> createCategory(@Valid @RequestBody CategoryDTO categoryDTO, BindingResult bindingResult)

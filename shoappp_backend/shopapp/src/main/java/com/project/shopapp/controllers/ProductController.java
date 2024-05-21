@@ -3,6 +3,7 @@ package com.project.shopapp.controllers;
 
 
 import com.github.javafaker.Faker;
+import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.ProductDTO;
 import com.project.shopapp.dtos.ProductImageDTO;
 import com.project.shopapp.models.Product;
@@ -42,6 +43,7 @@ public class ProductController {
 
     private final IProductService iProductService;
     private final ProductService productService;
+    private final LocalizationUtils localizationUtils;
 
     @PostMapping("")
     //POST http://localhost:8088/v1/api/products

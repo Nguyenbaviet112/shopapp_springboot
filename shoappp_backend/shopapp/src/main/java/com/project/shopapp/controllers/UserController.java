@@ -1,10 +1,10 @@
 package com.project.shopapp.controllers;
 
-import com.project.shopapp.Utils.LocalizationUtils;
+import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.Utils.MessageKeys;
 import com.project.shopapp.dtos.UserDTO;
 import com.project.shopapp.responses.LoginResponse;
 import com.project.shopapp.services.IUserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
 import java.util.List;
-import java.util.Locale;
+
 
 @RestController
 @RequestMapping("${api.prefix}/users")
@@ -67,14 +65,14 @@ public class UserController {
             String token = iUserService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
             return ResponseEntity.ok(LoginResponse
                     .builder()
-                    .message(localizationUtils.getLocalizedMessage("user.login.login_successfully"))
+                    .message(localizationUtils.getLocalizedMessage(MessageKeys.LOGIN_SUCCESSFULLY))
                     .token(token)
                     .build()
             );
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(LoginResponse.builder()
-                    .message(e.getMessage())
+                    .message(localizationUtils.getLocalizedMessage(MessageKeys.LOGIN_FAILED, e.getMessage()))
                     .build());
         }
 
