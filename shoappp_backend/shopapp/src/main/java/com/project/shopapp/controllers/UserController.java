@@ -58,8 +58,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-            @Valid @RequestBody UserDTO userLoginDTO,
-            HttpServletRequest request)
+            @Valid @RequestBody UserDTO userLoginDTO)
     {
         // Kiêm tra thông tin đăng nhập và sinh token
         // Trả về token trong Respon
@@ -68,7 +67,7 @@ public class UserController {
             String token = iUserService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
             return ResponseEntity.ok(LoginResponse
                     .builder()
-                    .message(localizationUtils.getLocalizedMessage("user.login.login_successfully", request))
+                    .message(localizationUtils.getLocalizedMessage("user.login.login_successfully"))
                     .token(token)
                     .build()
             );

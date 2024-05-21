@@ -13,7 +13,8 @@ public class LocalizationUtils {
     private final MessageSource messageSource;
     private final LocaleResolver localResolver;
 
-    public String getLocalizedMessage(String messageKey, HttpServletRequest request) {
+    public String getLocalizedMessage(String messageKey) {
+        HttpServletRequest request = WebUtils.getCurrentRequest();
         Locale locale = localResolver.resolveLocale(request);
         return messageSource.getMessage(messageKey, null, locale);
     }
