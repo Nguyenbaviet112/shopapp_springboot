@@ -11,12 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginResponse {
+public class UpdateCategoryResponse {
 
     @JsonProperty("message")
     private String message;
-
-    @JsonProperty("token")
-    private String token;
 
 }

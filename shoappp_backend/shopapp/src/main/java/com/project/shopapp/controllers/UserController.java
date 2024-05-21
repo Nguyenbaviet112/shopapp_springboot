@@ -1,8 +1,6 @@
 package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.UserDTO;
-import com.project.shopapp.exceptions.DataNotFoundException;
-import com.project.shopapp.models.User;
 import com.project.shopapp.responses.LoginResponse;
 import com.project.shopapp.services.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.support.RequestContextUtils;
+
 
 import java.util.List;
 import java.util.Locale;
