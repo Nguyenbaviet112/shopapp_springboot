@@ -1,6 +1,6 @@
-import { LoginDTO } from '../dtos/user/login.dto';
+import { LoginDTO } from '../../dtos/user/login.dto';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../services/user.service';
 import { NgForm } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
 
@@ -41,8 +41,7 @@ export class LoginComponent {
         next: (response: any) => {
 
           debugger
-          // dang ky thanh cong chuyen sang man hinh login
-          //this.router.navigate(['/login']);
+          const {token} = response;
           
         },
         complete: () => {
