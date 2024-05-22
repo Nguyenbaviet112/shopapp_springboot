@@ -8,7 +8,8 @@ import { OrderComponent } from './components/order/order.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 
 @NgModule({
@@ -26,7 +27,14 @@ import { HttpClientModule } from '@angular/common/http'
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    }
+  
+  ],
   bootstrap: [
     // RegisterComponent,
     LoginComponent
