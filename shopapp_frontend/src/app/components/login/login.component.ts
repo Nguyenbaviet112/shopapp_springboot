@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { NgForm } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
+import { LoginResponse } from 'src/app/responses/user/login.response';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,11 @@ export class LoginComponent {
 
   @ViewChild('loginForm') loginForm!: NgForm;
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(
+    private router: Router, 
+    private userService: UserService,
+    private tokenService:TokenService
+  ) {
 
   }
 
@@ -38,10 +44,11 @@ export class LoginComponent {
 
     this.userService.login(loginDTO).subscribe(
       {
-        next: (response: any) => {
+        next: (response: LoginResponse) => {
 
           debugger
           const {token} = response;
+          this.tokenService.setToken(token);
           
         },
         complete: () => {
