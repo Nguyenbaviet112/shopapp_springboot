@@ -5,6 +5,8 @@ import { NgForm } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
 import { LoginResponse } from 'src/app/responses/user/login.response';
 import { TokenService } from 'src/app/services/token.service';
+import { RoleService } from 'src/app/services/role.service';
+import { Role } from 'src/app/models/role.model';
 
 @Component({
   selector: 'app-login',
@@ -18,13 +20,34 @@ export class LoginComponent {
   constructor(
     private router: Router, 
     private userService: UserService,
-    private tokenService:TokenService
+    private tokenService:TokenService,
+    private roleService:RoleService
   ) {
 
   }
 
   phoneNumber: string = '';
   password: string = '';
+
+
+  roles: Role[] = [];
+  rememberMe: boolean = true;
+  selectedRole: Role | undefined
+
+  ngOnInit() {
+    debugger
+    this.roleService.getRoles().subscribe({
+      next: (roles: Role[]) => {
+        debugger
+        this.roles = roles;
+        this.selectedRole = roles.length > 0 ? roles[0] : undefined;
+      },
+      error: (error : any) => {
+        debugger
+        console.error('error getting roles: ', error);
+      }
+    })
+  }
 
   onPhoneNumberChange() {
 
@@ -37,8 +60,9 @@ export class LoginComponent {
     
     const loginDTO:LoginDTO = {
   
-      "phone_number" : this.phoneNumber,
-      "password" : this.password
+      phone_number : this.phoneNumber,
+      password : this.password,
+      role_id : this.selectedRole?.id ?? 1
 
     }
 
@@ -54,9 +78,9 @@ export class LoginComponent {
         complete: () => {
           debugger
         },
-        error: (err:any) => {
+        error: (error:any) => {
           // xu ly loi neu co
-          alert(`Can not register, error: ${err.error}`);
+          alert(error?.error?.message);
           
         },
       }
