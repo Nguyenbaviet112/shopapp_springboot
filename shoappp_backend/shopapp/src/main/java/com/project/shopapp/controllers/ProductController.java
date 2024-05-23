@@ -13,6 +13,7 @@ import com.project.shopapp.responses.ProductResponse;
 import com.project.shopapp.services.IProductService;
 import com.project.shopapp.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -121,6 +122,28 @@ public class ProductController {
 
 
         }
+
+        @GetMapping("/images/{imageName}")
+        public ResponseEntity<?> viewImage(@PathVariable String imageName) {
+            try {
+                java.nio.file.Path imagePath = Paths.get("uploads/"+imageName);
+                UrlResource resource = new UrlResource(imagePath.toUri());
+
+                if (resource.exists()) {
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(resource);
+                } else {
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(new UrlResource(Paths.get("uploads/notfound.jpeg").toUri()));
+                    //return ResponseEntity.notFound().build();
+                }
+            } catch (Exception e) {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        
         private String storeFile(MultipartFile file) throws IOException {
 
             if (!isImageFile(file) || file.getOriginalFilename() == null)
