@@ -175,9 +175,10 @@ public class ProductController {
 
 
         @GetMapping("")
-    public ResponseEntity<ProductListResponse> getAllProducts(@RequestParam("page") int page, @RequestParam("limit") int limit)
+    public ResponseEntity<ProductListResponse> getAllProducts(@RequestParam("page") int page
+                , @RequestParam("limit") int limit)
     {
-        PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("id").ascending());
         Page<ProductResponse> productPage = iProductService.getAllProducts(pageRequest);
 
         int totalPages = productPage.getTotalPages();
