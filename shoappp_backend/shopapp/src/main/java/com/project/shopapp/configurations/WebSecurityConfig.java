@@ -3,9 +3,9 @@ package com.project.shopapp.configurations;
 import com.project.shopapp.filters.JwtTokenFilter;
 import com.project.shopapp.models.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,7 +29,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    @Value("${api.prefix")
+    @Value("${api.prefix}")
     private String apiPrefix;
     private final JwtTokenFilter jwtTokenFilter;
 
@@ -80,7 +80,7 @@ public class WebSecurityConfig {
 
                             /* products */
                             .requestMatchers(HttpMethod.GET,
-                                    String.format("%s/products**", apiPrefix)).permitAll()
+                                    String.format("%s/products/**", apiPrefix)).permitAll()
                             .requestMatchers(HttpMethod.GET,
                                     String.format("%s/products/image/*", apiPrefix)).permitAll()
                             .requestMatchers(HttpMethod.POST,
