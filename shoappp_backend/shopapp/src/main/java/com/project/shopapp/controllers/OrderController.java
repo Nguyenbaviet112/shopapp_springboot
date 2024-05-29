@@ -61,7 +61,7 @@ public class OrderController {
     {
         try {
             Order order = orderService.getOrderById(orderId);
-            return ResponseEntity.status(HttpStatus.OK).body(order);
+            return ResponseEntity.ok(order);
         }
         catch (Exception e)
         {
