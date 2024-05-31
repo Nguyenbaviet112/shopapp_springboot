@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { Category } from '../../models/category.model';
-// import { ProductService } from 'src/app/services/product.service';
-// import { CategoryService } from 'src/app/services/category.service';
+import { ProductService } from 'src/app/services/product.service';
+import { CategoryService } from 'src/app/services/category.service';
 import { environment } from 'src/app/environments/environment';
 import { Router } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
