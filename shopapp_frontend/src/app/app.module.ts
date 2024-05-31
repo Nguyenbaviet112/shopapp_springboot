@@ -36,8 +36,8 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
   
   ],
   bootstrap: [
-    RegisterComponent,
-    //LoginComponent
+    //RegisterComponent,
+    LoginComponent
   ]
 })
 export class AppModule { }
