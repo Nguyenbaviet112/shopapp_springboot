@@ -23,7 +23,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     RegisterComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule,        
     FormsModule,
     HttpClientModule
   ],
@@ -36,8 +36,8 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
   
   ],
   bootstrap: [
-    // RegisterComponent,
-    LoginComponent
+    RegisterComponent,
+    //LoginComponent
   ]
 })
 export class AppModule { }
