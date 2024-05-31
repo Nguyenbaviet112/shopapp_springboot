@@ -48,14 +48,11 @@ public class WebSecurityConfig {
                             .requestMatchers(
 
                                     String.format("%s/users/register", apiPrefix),
-                                    String.format("%s/users/login", apiPrefix)
+                                    String.format("%s/users/login", apiPrefix),
+                                    String.format("%s/roles/**", apiPrefix)
 
                             )
                             .permitAll()
-
-                            /* roles */
-                            .requestMatchers(HttpMethod.GET,
-                                    String.format("%s/roles**", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
 
                             /* categories */
                             .requestMatchers(HttpMethod.GET,
