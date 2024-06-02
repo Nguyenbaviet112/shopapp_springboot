@@ -4,6 +4,7 @@ import {
     IsPhoneNumber,
     IsDate
 } from 'class-validator';
+
 export class LoginDTO {
 
     @IsPhoneNumber()

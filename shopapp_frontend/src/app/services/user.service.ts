@@ -17,20 +17,13 @@ export class UserService {
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
   }
+  
   constructor(private http: HttpClient,
     private httpUtilService: HttpUtilService)
     {
 
-     }
+    }
 
-  private createHeaders(): HttpHeaders {
-    return new HttpHeaders(
-      {
-        'Content-Type': 'application/json',
-        'Accept-Language': 'vi'
-      }
-    );
-  }
 
   register(registerDTO: RegisterDTO):Observable<any> {
       return this.http.post(this.apiRegister, registerDTO, this.apiConfig);
